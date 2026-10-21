@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+publish/
+
+# IDE files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Test files you drop in while trying it out
+test-files/
+Merged*.pdf

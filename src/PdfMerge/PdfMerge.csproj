@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- WinExe = no console window flashes up when launched from Explorer -->
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PdfMerge</AssemblyName>
+    <RootNamespace>PdfToolkit</RootNamespace>
+    <Version>0.1.0</Version>
+    <!-- Needed by the [LibraryImport] Windows API calls in Native.cs -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- PDFsharp: MIT-licensed PDF library (merging pages + drawing images) -->
+    <PackageReference Include="PDFsharp" Version="6.2.*" />
+  </ItemGroup>
+
+</Project>
