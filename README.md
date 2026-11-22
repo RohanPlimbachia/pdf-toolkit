@@ -1,6 +1,11 @@
 # PDF Toolkit for Windows
 
-Right-click tools for PDFs in File Explorer, like the built-in "Create PDF" Quick Action on macOS.
+[![Build](https://github.com/RohanPlimbachia/pdf-toolkit/actions/workflows/build.yml/badge.svg)](https://github.com/RohanPlimbachia/pdf-toolkit/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Right-click tools for PDFs in File Explorer, like the built-in "Create PDF" Quick Action on macOS. Windows has no built-in way to combine PDFs, and most online tools make you upload your documents. This does it locally in one click.
+
+![Selecting files, right-clicking, and getting Merged.pdf](docs/demo.gif)
 
 **Current feature:** select several PDFs and/or images (JPG, PNG), right-click, choose **Merge into PDF**, and get a single `Merged.pdf` in the same folder.
 
@@ -10,12 +15,20 @@ Right-click tools for PDFs in File Explorer, like the built-in "Create PDF" Quic
 - Existing files are never overwritten (`Merged (2).pdf`, `Merged (3).pdf`, ...).
 - Everything runs locally. No files are uploaded anywhere.
 
-## Requirements
+## Download and install
 
-- Windows 10 or 11
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (to build)
+1. Download `pdf-toolkit-win-x64.zip` from the [latest release](https://github.com/RohanPlimbachia/pdf-toolkit/releases/latest) and unzip it anywhere you'll keep it.
+2. In the unzipped folder, run:
 
-## Build and install
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts\install-context-menu.ps1
+   ```
+
+That's it: no admin rights and no .NET install needed. Works on Windows 10 and 11.
+
+## Build from source
+
+Needs the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 
 ```powershell
 # 1. Build a release copy into the publish\ folder
@@ -42,6 +55,14 @@ Explorer starts **one copy of the program per selected file**. The first copy gr
 | `src/PdfMerge/Merger.cs` | PDF and image merging (uses [PDFsharp](https://github.com/empira/PDFsharp), MIT) |
 | `src/PdfMerge/Native.cs` | Windows message boxes and Explorer-style sorting |
 | `scripts/*.ps1` | Add or remove the right-click menu entry |
+
+## Design decisions
+
+- **Registry entries under `HKEY_CURRENT_USER`**, so installing never needs admin rights and uninstalling leaves nothing behind.
+- **`MultiSelectModel = Player`** in the registry lifts Explorer's default limit of 15 files for a multi-select menu item.
+- **A short "quiet period" instead of a fixed file count.** Explorer doesn't tell the program how many files were selected, so the collector waits until no new path arrives for 0.8 s.
+- **Never overwrite.** Output goes to the next free name, so a merge can't destroy an earlier one.
+- **Clear errors.** Password-protected or damaged PDFs produce a message naming the file instead of a crash.
 
 ## Roadmap
 
